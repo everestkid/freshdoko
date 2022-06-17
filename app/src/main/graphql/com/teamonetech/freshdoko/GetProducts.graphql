@@ -1,0 +1,109 @@
+query ProductCollection($before: String, $after: String, $filter: ProductFilterInput, $channel: String!, $locale: LanguageCodeEnum!) {
+  products(
+    first: 4
+    channel: $channel
+    after: $after
+    before: $before
+    filter:$filter
+  ) {
+    totalCount
+    edges {
+      cursor
+      node {
+        ...ProductCardFragment
+        __typename
+      }
+      __typename
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+      __typename
+    }
+    __typename
+  }
+}
+
+fragment ProductCardFragment on Product {
+  id
+  slug
+  name
+  description
+  translation(languageCode: $locale) {
+    id
+    name
+    __typename
+  }
+
+  metadata{
+  ...MetaDataFragment
+  }
+  attributes{
+attribute{
+...AttributeFragment
+__typename
+
+}
+  }
+  thumbnail {
+    ...ImageFragment
+    __typename
+  }
+  category {
+    id
+    name
+    translation(languageCode: $locale) {
+      id
+      name
+      __typename
+    }
+    __typename
+  }
+  pricing {
+    onSale
+    priceRange {
+      start {
+        gross {
+          ...PriceFragment
+          __typename
+        }
+        __typename
+      }
+      stop {
+        gross {
+          ...PriceFragment
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment AttributeFragment on Attribute{
+name
+}
+
+fragment ImageFragment on Image {
+  url
+  alt
+  __typename
+}
+
+fragment MetaDataFragment on MetadataItem{
+key
+value
+__typename
+}
+
+
+fragment PriceFragment on Money {
+  currency
+  amount
+  __typename
+}

@@ -1,0 +1,12 @@
+query GetCharacters() {
+	   products(last: 5, channel:"nrs") {
+        edges {
+          node {
+            name
+            description
+          }
+        }
+      }
+}
+
+
